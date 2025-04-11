@@ -48,14 +48,23 @@ class Program
 
 
         string start = litery[0];
-        var distances = GraphAlgorithms.Dijkstra(graph, start); // Uruchamia Algorytm Dikstry. Start to litera początkowa do której idzie reszta
+        //var distances = GraphAlgorithms.Dijkstra(graph, start); // Uruchamia Algorytm Dikstry. Start to litera początkowa do której idzie reszta
 
-        // Wyniki
-        Console.WriteLine($"\nNajkrótsze odległości od wierzchołka {start}:");
-        foreach (var kvp in distances)
+        //// Wyniki
+        //Console.WriteLine($"\nNajkrótsze odległości od wierzchołka {start}:");
+        //foreach (var kvp in distances)
+        //{
+        //    string value = kvp.Value == int.MaxValue ? "∞" : kvp.Value.ToString();
+        //    Console.WriteLine($"{kvp.Key}: {value}");
+        //}
+
+
+        var cycles = CycleFinder.FindCyclesFrom(graph, start);
+
+        // Wypisanie cykli
+        foreach (var cycle in cycles)
         {
-            string value = kvp.Value == int.MaxValue ? "∞" : kvp.Value.ToString();
-            Console.WriteLine($"{kvp.Key}: {value}");
+            Console.WriteLine(string.Join(" -> ", cycle));
         }
     }
 }
