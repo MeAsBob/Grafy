@@ -9,10 +9,10 @@ class Program
     {
         var graph = new AdjacencyGraph<string, WeightedEdge>();
         List<string> litery = new List<string> { "A", "B", "C", "D", "E", "F","G","H","I","J","K"}; // Lista maksymalnej ilości wierzchołków i ich indentyfikatory
-        Random los = new Random();
+        Random los = new Random(998);  // 998 to fany mały graf
         int ilosc = los.Next(3, litery.Count);
 
-        for (int i = 0; i < ilosc; i++) // Generacja wierzchołków na podstawie losowej wartości ilość(Min 3)
+        for (int i = 0; i < ilosc ; i++) // Generacja wierzchołków na podstawie losowej wartości ilość(Min 3)
         {
             graph.AddVertex(litery[i]);
         }
@@ -25,6 +25,10 @@ class Program
                 var edge = new WeightedEdge(litery[i], litery[targetIndex], los.Next(1, 10));
                 graph.AddEdge(edge);
             }
+            else
+            {
+                i--;
+            }
         }
 
         for (int i = 0; i < 0; i++) // Zmienić tutaj w przypadku większej ilości krawiędzi
@@ -35,6 +39,10 @@ class Program
             {
                 var edge = new WeightedEdge(litery[targetIndex], litery[targetIndex2], los.Next(1, 10));
                 graph.AddEdge(edge);
+            }
+            else
+            {
+                i--;
             }
         }
 
@@ -47,24 +55,27 @@ class Program
         }
 
 
-        string start = litery[0];
-        //var distances = GraphAlgorithms.Dijkstra(graph, start); // Uruchamia Algorytm Dikstry. Start to litera początkowa do której idzie reszta
 
-        //// Wyniki
-        //Console.WriteLine($"\nNajkrótsze odległości od wierzchołka {start}:");
-        //foreach (var kvp in distances)
-        //{
-        //    string value = kvp.Value == int.MaxValue ? "∞" : kvp.Value.ToString();
-        //    Console.WriteLine($"{kvp.Key}: {value}");
-        //}
-
-
-        var cycles = CycleFinder.FindCyclesFrom(graph, start);
-
-        // Wypisanie cykli
-        foreach (var cycle in cycles)
+        for (int i = 0; i < ilosc; i++)
         {
-            Console.WriteLine(string.Join(" -> ", cycle));
+            var distances = GraphAlgorithms.Dijkstra(graph, litery[i]); // Uruchamia Algorytm Dikstry. Start to litera początkowa do której idzie reszta
+
+            // Wyniki
+            Console.WriteLine($"\nNajkrótsze odległości od wierzchołka {litery[i]}:");
+            foreach (var kvp in distances)
+            {
+                string value = kvp.Value == int.MaxValue ? "∞" : kvp.Value.ToString();
+                Console.WriteLine($"{kvp.Key}: {value}");
+            }
+
+
+            var cycles = CycleFinder.FindCyclesFrom(graph, litery[i]);
+
+            // Wypisanie cykli
+            foreach (var cycle in cycles)
+            {
+                Console.WriteLine(string.Join(" -> ", cycle));
+            }
         }
     }
 }
